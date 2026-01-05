@@ -1,54 +1,47 @@
+const {
+  handleCustomErrors,
+  handlePsqlErrors,
+  handleServerErrors,
+} = require("./errors/index.js");
+
 const express = require("express");
 const app = express();
-const db = require("./db/connection.js");
-const articles = require("./db/data/test-data/articles.js");
-const users = require("./db/data/test-data/users.js");
+
+const {
+  getArticles,
+  getArticleById,
+  getCommentsByArticleId,
+  getUpdatedArticle,
+} = require("./controllers/articles.controller");
+
+const getUsers = require("./controllers/users.controller");
+const getTopics = require("./controllers/topics.controller");
+const {
+  addComments,
+  deleteComment,
+} = require("./controllers/comments.controller");
 
 app.use(express.json());
+app.use(express.static("public"));
 
-app.get("/api/topics", (req, res, next) => {
-  return db.query(`SELECT * FROM topics `).then(({ rows }) => {
-    res.status(200).send({ topics: rows });
-    next();
-  });
-});
+app.get("/api/topics", getTopics);
 
-app.get("/api/articles", (req, res, next) => {
-  return db
-    .query(
-      `SELECT 
-      a.article_id,
-      a.title,
-      a.topic,
-      a.author,
-      a.created_at,
-      a.votes,
-      a.article_img_url,
-      COUNT(c.comment_id) AS comment_count
-    FROM articles a
-    LEFT JOIN comments c ON a.article_id = c.article_id
-    GROUP BY a.article_id
-    ORDER BY a.created_at DESC;`
-    )
-    .then(({ rows }) => {
-      res.status(200).send({ articles: rows });
-      next();
-    });
-});
+app.get("/api/articles", getArticles);
 
-app.get("/api/users", (req, res, next) => {
-  return db
-    .query(
-      `
-      SELECT username, name, avatar_url 
-      FROM users;
-    `
-    )
-    .then(({ rows }) => {
-      res.status(200).send({ user: rows });
-      next();
-    });
-});
-console.log("hello");
+app.get("/api/users", getUsers);
+
+app.get("/api/articles/:article_id", getArticleById);
+
+app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
+
+app.post("/api/articles/:article_id/comments", addComments);
+
+app.patch("/api/articles/:article_id", getUpdatedArticle);
+
+app.delete("/api/comments/:comment_id", deleteComment);
+
+app.use(handleCustomErrors);
+app.use(handlePsqlErrors);
+app.use(handleServerErrors);
 
 module.exports = app;
