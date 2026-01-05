@@ -13,8 +13,8 @@ function addComments(req, res, next) {
 function deleteComment(req, res, next) {
   const { comment_id } = req.params;
   return removeComment(comment_id)
-    .next((comment) => {
-      res.status(204).send({ comment });
+    .then(() => {
+      res.status(204).send();
     })
     .catch(next);
 }
