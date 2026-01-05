@@ -1,3 +1,4 @@
+const cors = require("cors");
 const {
   handleCustomErrors,
   handlePsqlErrors,
@@ -21,6 +22,7 @@ const {
   deleteComment,
 } = require("./controllers/comments.controller");
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
