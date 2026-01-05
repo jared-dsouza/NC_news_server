@@ -34,9 +34,9 @@
     "supertest": "^7.1.4"
   },
   "dependencies": {
-    "dotenv": "^16.4.7",
+    "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "pg": "^8.13.3",
+    "pg": "^8.16.3",
     "pg-format": "^1.0.4"
   },
   "jest": {
