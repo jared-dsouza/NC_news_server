@@ -11,8 +11,8 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
     DROP TABLE IF EXISTS topics;
 
     CREATE TABLE topics (
-      slug VARCHAR(255) PRIMARY KEY,
-      description VARCHAR(255),
+      slug VARCHAR(255) PRIMARY KEY, 
+      description VARCHAR(255), 
       img_url VARCHAR(1000)
     );
 
@@ -20,25 +20,25 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
       username VARCHAR(255) PRIMARY KEY,
       name VARCHAR(255),
       avatar_url VARCHAR(1000)
-    );
+    ); 
 
     CREATE TABLE articles (
       article_id SERIAL PRIMARY KEY,
-      title VARCHAR(255),
-      topic VARCHAR(255) REFERENCES topics(slug),
-      author VARCHAR(255) REFERENCES users(username),
-      body TEXT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      votes INT DEFAULT 0,
+      title VARCHAR(255), 
+      topic VARCHAR(255) REFERENCES topics(slug), 
+      author VARCHAR(255) REFERENCES users(username), 
+      body TEXT, 
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+      votes INT DEFAULT 0, 
       article_img_url VARCHAR(1000)
-    );
+    ); 
 
     CREATE TABLE comments (
       comment_id SERIAL PRIMARY KEY,
       article_id INT REFERENCES articles(article_id),
       body TEXT,
-      votes INT DEFAULT 0,
-      author VARCHAR(255) REFERENCES users(username),
+      votes INT DEFAULT 0, 
+      author VARCHAR(255) REFERENCES users(username), 
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     `
@@ -83,8 +83,9 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
           // Foreach Comment look through the articles data to find the
           // article_id that matches the article_title of the comment
           const { article_id } = articleInfo.find((info) => {
-            return info.article_title === comment.title;
+            return info.title === comment.article_title;
           });
+
           return [
             article_id,
             comment.body,

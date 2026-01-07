@@ -140,7 +140,7 @@ describe("GET /api/articles/:article_id/comments", () => {
       .get("/api/articles/1/comments")
       .expect(200)
       .then(({ body }) => {
-        expect(body.comments).toHaveLength(18);
+        expect(body.comments).toHaveLength(11);
       });
   });
 
